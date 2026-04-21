@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -30,8 +30,6 @@ body{font-family:'Roboto',sans-serif;background:var(--bg);color:var(--text);min-
 .ws-dot.on{background:var(--green);animation:pulse 2s infinite;}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
 .user-badge{background:var(--primary-l);border:1px solid var(--primary-b);border-radius:4px;padding:5px 12px;font-size:0.78rem;font-weight:700;color:var(--primary);}
-.logout-btn{padding:6px 14px;border-radius:var(--radius);border:1.5px solid var(--border);background:#f8f9fa;font-family:'Roboto',sans-serif;font-size:0.75rem;font-weight:500;cursor:pointer;color:var(--text2);transition:all .2s;}
-.logout-btn:hover{border-color:var(--red);color:var(--red);}
 .clock{font-family:'Roboto Mono',monospace;font-size:1.1rem;font-weight:500;color:var(--primary);text-align:center;}
 .date{font-size:0.65rem;color:var(--text2);margin-top:2px;text-align:center;}
 
@@ -105,7 +103,6 @@ body{font-family:'Roboto',sans-serif;background:var(--bg);color:var(--text);min-
         <span id="wsLabel" style="font-size:0.72rem;color:var(--text2);">Connecting</span>
       </div>
       <div class="user-badge" id="userBadge">&#128100; Admin</div>
-      <button class="logout-btn" onclick="logout()">Logout</button>
     </div>
   </div>
 
@@ -113,8 +110,8 @@ body{font-family:'Roboto',sans-serif;background:var(--bg);color:var(--text);min-
 
     
     <div class="stats-grid">
-      <div class="stat-card"><div class="stat-label">Total Seats</div><div class="stat-val c-blue" id="adTotal">390</div></div>
-      <div class="stat-card"><div class="stat-label">Available</div><div class="stat-val c-green" id="adAvail">390</div></div>
+      <div class="stat-card"><div class="stat-label">Total Seats</div><div class="stat-val c-blue" id="adTotal">394</div></div>
+      <div class="stat-card"><div class="stat-label">Available</div><div class="stat-val c-green" id="adAvail">394</div></div>
       <div class="stat-card"><div class="stat-label">Occupied</div><div class="stat-val c-red" id="adOcc">0</div></div>
       <div class="stat-card"><div class="stat-label">Today Students</div><div class="stat-val c-amber" id="adStudents">0</div></div>
       <div class="stat-card"><div class="stat-label">Today Visitors</div><div class="stat-val c-pink" id="adVisitors">0</div></div>
@@ -149,6 +146,8 @@ body{font-family:'Roboto',sans-serif;background:var(--bg);color:var(--text);min-
           <button class="fbtn" id="df-all" onclick="setFilter('all')">All</button>
           <button class="fbtn" onclick="refreshLogs()">&#128260;</button>
           <button class="fbtn" onclick="exportCSV()" style="background:var(--primary);color:#fff;border-color:var(--primary);">&#128229; Export CSV</button>
+          <button class="fbtn" onclick="printReport()" style="background:#1565c0;color:#fff;border-color:#1565c0;">&#128424; Print Report</button>
+          <button class="fbtn" onclick="resetAllSeats()" style="background:#c62828;color:#fff;border-color:#c62828;">&#9888; Release All Seats</button>
         </div>
       </div>
       <div class="log-tabs" style="margin-top:12px;">
@@ -177,17 +176,15 @@ body{font-family:'Roboto',sans-serif;background:var(--bg);color:var(--text);min-
 <script>
 function getParam(k){ return new URLSearchParams(window.location.search).get(k); }
 let currentUser = { name: getParam('user')||'Admin', role: getParam('role')||'admin' };
-const WS_URL='ws://127.0.0.1:8080';
-let ws, seats = {}, currentFilter = 'today';
+const API='api.php';
+let seats = {}, currentFilter = 'today';
 let cachedStudents = [], cachedVisitors = [];
-const FLOOR_TOTALS = {G:42, 1:114, 2:144, 3:90};
+const FLOOR_TOTALS = {G:42, 1:114, 2:142, 3:96};
 function sid(f,n){ return f+'-'+n; }
-
-function logout(){ window.location.href = 'https://v1.nitj.ac.in/erp/logout'; }
 
 window.addEventListener('load', () => {
   document.getElementById('portal').style.display = 'block';
-  document.getElementById('userBadge').textContent = '\u{1F464} ' + currentUser.name;
+  document.getElementById('userBadge').textContent = currentUser.name;
   buildGrids(); connectWS(); updateClock(); setInterval(updateClock, 1000);
 });
 
@@ -219,70 +216,68 @@ function buildGrids(){
 
 function mkAdminEl(lbl,bg,w,h){const e=document.createElement('div');e.style.cssText=`width:${w}px;height:${h}px;background:${bg};border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:0.6rem;font-weight:700;color:#fff;text-transform:uppercase;flex-shrink:0;`;e.textContent=lbl;return e;}
 function mkAdminSpace(lbl,w,h){const e=document.createElement('div');e.style.cssText=`width:${w}px;height:${h}px;background:#f0f2f5;border:2px dashed var(--border);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:600;color:var(--text3);flex-shrink:0;`;e.textContent=lbl;return e;}
-function makeAdminTable(f,startN,perSide,bothSides=true){const wrap=document.createElement('div');wrap.className='table-unit';const topRow=document.createElement('div');topRow.className='seat-row';for(let i=0;i<perSide;i++) topRow.appendChild(makeAdminSeat(f,startN+i));const tbl=document.createElement('div');tbl.className='table-block';tbl.style.cssText='width:'+(perSide*29)+'px;height:20px;';tbl.textContent='TABLE';wrap.appendChild(topRow);wrap.appendChild(tbl);if(bothSides){const botRow=document.createElement('div');botRow.className='seat-row';for(let i=0;i<perSide;i++) botRow.appendChild(makeAdminSeat(f,startN+perSide+i));wrap.appendChild(botRow);}return wrap;}
+function makeAdminTable(f,startN,perSide,bothSides=true){return makeTable(f,startN,perSide,bothSides);}
 
 function buildFloor0(){
   const layout=document.getElementById('adminGridG');
   layout.style.cssText='display:flex;flex-direction:column;gap:12px;';
   let n=1;
-
   const mainRow=document.createElement('div');
   mainRow.style.cssText='display:flex;gap:20px;align-items:flex-start;';
-
   mainRow.appendChild(mkAdminSpace('SPACE',180,220));
-
   const rightCol=document.createElement('div');
   rightCol.style.cssText='display:flex;flex-direction:column;gap:10px;';
-  rightCol.appendChild(makeAdminTable('G',n,6,false));n+=6;
-  for(let t=0;t<3;t++){rightCol.appendChild(makeAdminTable('G',n,6,true));n+=12;}
+  rightCol.appendChild(makeTable('G',n,6,false));n+=6;
+  for(let t=0;t<3;t++){rightCol.appendChild(makeTable('G',n,6,true));n+=12;}
   mainRow.appendChild(rightCol);
   layout.appendChild(mainRow);
-
   const botRow0=document.createElement('div');
   botRow0.style.cssText='display:flex;gap:16px;align-items:center;margin-top:4px;';
   botRow0.appendChild(mkAdminEl('LIFT','#8b0000',70,36));
-  const doorSpacer=document.createElement('div');doorSpacer.style.cssText='flex:1;';
-  botRow0.appendChild(doorSpacer);
+  const ds=document.createElement('div');ds.style.cssText='flex:1;';botRow0.appendChild(ds);
   botRow0.appendChild(mkAdminEl('DOOR','#555',60,36));
-  const spacer2=document.createElement('div');spacer2.style.cssText='flex:1;';
-  botRow0.appendChild(spacer2);
+  const s2=document.createElement('div');s2.style.cssText='flex:1;';botRow0.appendChild(s2);
   layout.appendChild(botRow0);
 }
 
 function buildFloor1(){
   const layout=document.getElementById('adminGrid1');
-  layout.style.cssText='display:flex;flex-direction:column;gap:12px;';
+  layout.style.cssText='display:flex;flex-direction:column;gap:10px;';
   let n=1;
-
   const mainRow=document.createElement('div');
-  mainRow.style.cssText='display:flex;gap:24px;align-items:flex-start;';
-
+  mainRow.style.cssText='display:flex;gap:20px;align-items:flex-start;';
   const leftCol=document.createElement('div');
-  leftCol.style.cssText='display:flex;flex-direction:column;gap:10px;';
-  const leftLabel=document.createElement('div');
-  leftLabel.style.cssText='font-size:0.62rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:2px;';
-  leftLabel.textContent='Left Section';
-  leftCol.appendChild(leftLabel);
-  for(let t=0;t<7;t++){leftCol.appendChild(makeAdminTable('1',n,7,true));n+=14;}
-  leftCol.appendChild(makeAdminTable('1',n,7,false));n+=7; // wall table
-
+  leftCol.style.cssText='display:flex;flex-direction:column;gap:8px;';
+  leftCol.appendChild(makeTable('1',n,8,true));n+=16;
+  leftCol.appendChild(makeTable('1',n,8,true));n+=16;
+  leftCol.appendChild(makeTable('1',n,6,true));n+=12;
+  leftCol.appendChild(makeTable('1',n,6,true));n+=12;
+  leftCol.appendChild(makeTable('1',n,6,true));n+=12;
   const rightCol=document.createElement('div');
-  rightCol.style.cssText='display:flex;flex-direction:column;gap:10px;';
-  const rightLabel=document.createElement('div');
-  rightLabel.style.cssText='font-size:0.62rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:2px;';
-  rightLabel.textContent='Right Section';
-  rightCol.appendChild(rightLabel);
-  rightCol.appendChild(mkAdminSpace('SPACE',160,80));
-  rightCol.appendChild(makeAdminTable('1',n,5,false));n+=5;
-  rightCol.appendChild(makeAdminTable('1',n,4,false));n+=4;
-
+  rightCol.style.cssText='display:flex;flex-direction:column;gap:8px;';
+  const top910=document.createElement('div');top910.style.cssText='display:flex;gap:3px;';
+  top910.appendChild(makeSeat('1',n));n++;top910.appendChild(makeSeat('1',n));n++;
+  rightCol.appendChild(top910);
+  const r1116=document.createElement('div');r1116.style.cssText='display:flex;flex-direction:column;gap:2px;';
+  const r1116row=document.createElement('div');r1116row.className='seat-row';
+  for(let i=0;i<6;i++){r1116row.appendChild(makeSeat('1',n));n++;}
+  const r1116tbl=document.createElement('div');r1116tbl.className='table-block';
+  r1116tbl.style.cssText='width:'+(6*29)+'px;height:20px;';r1116tbl.textContent='TABLE';
+  r1116.appendChild(r1116row);r1116.appendChild(r1116tbl);
+  rightCol.appendChild(r1116);
+  rightCol.appendChild(mkAdminSpace('SPACE',200,50));
+  rightCol.appendChild(makeTable('1',n,6,true));n+=12;
+  rightCol.appendChild(makeTable('1',n,6,true));n+=12;
+  rightCol.appendChild(makeTable('1',n,6,true));n+=12;
   mainRow.appendChild(leftCol);mainRow.appendChild(rightCol);
   layout.appendChild(mainRow);
-
   const botRow=document.createElement('div');
   botRow.style.cssText='display:flex;gap:16px;align-items:center;margin-top:4px;';
   botRow.appendChild(mkAdminEl('LIFT','#8b0000',70,36));
   const sp=document.createElement('div');sp.style.cssText='flex:1;';botRow.appendChild(sp);
+  const bot2=document.createElement('div');bot2.style.cssText='display:flex;gap:3px;';
+  bot2.appendChild(makeSeat('1',n));n++;bot2.appendChild(makeSeat('1',n));n++;
+  botRow.appendChild(bot2);
   botRow.appendChild(mkAdminEl('DOOR','#555',60,36));
   const sp2=document.createElement('div');sp2.style.cssText='flex:1;';botRow.appendChild(sp2);
   layout.appendChild(botRow);
@@ -290,42 +285,47 @@ function buildFloor1(){
 
 function buildFloor2(){
   const layout=document.getElementById('adminGrid2');
-  layout.style.cssText='display:flex;flex-direction:column;gap:12px;';
+  layout.style.cssText='display:flex;flex-direction:column;gap:10px;';
   let n=1;
-
   const mainRow=document.createElement('div');
-  mainRow.style.cssText='display:flex;gap:24px;align-items:flex-start;';
-
+  mainRow.style.cssText='display:flex;gap:20px;align-items:flex-start;';
   const leftCol=document.createElement('div');
-  leftCol.style.cssText='display:flex;flex-direction:column;gap:10px;';
-  const ll=document.createElement('div');ll.style.cssText='font-size:0.62rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:2px;';ll.textContent='Left Section';
-  leftCol.appendChild(ll);
-
-  for(let t=0;t<3;t++){leftCol.appendChild(makeAdminTable('2',n,5,true));n+=10;}
-  leftCol.appendChild(makeAdminTable('2',n,5,false));n+=5;
-
-  leftCol.appendChild(mkAdminSpace('SPACE',160,50));
-
-  for(let t=0;t<2;t++){leftCol.appendChild(makeAdminTable('2',n,5,true));n+=10;}
-  leftCol.appendChild(makeAdminTable('2',n,5,false));n+=5;
-
+  leftCol.style.cssText='display:flex;flex-direction:column;gap:8px;';
+  leftCol.appendChild(makeTable('2',n,6,false));n+=6;
+  leftCol.appendChild(makeTable('2',n,6,true));n+=12;
+  leftCol.appendChild(makeTable('2',n,6,true));n+=12;
+  leftCol.appendChild(mkAdminSpace('SPACE',200,44));
+  leftCol.appendChild(makeTable('2',n,6,true));n+=12;
+  leftCol.appendChild(makeTable('2',n,6,true));n+=12;
   const rightCol=document.createElement('div');
-  rightCol.style.cssText='display:flex;flex-direction:column;gap:10px;';
-  const rl=document.createElement('div');rl.style.cssText='font-size:0.62rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:2px;';rl.textContent='Right Section';
-  rightCol.appendChild(rl);
-  rightCol.appendChild(makeAdminTable('2',n,6,false));n+=6; // top wall
-  for(let t=0;t<4;t++){rightCol.appendChild(makeAdminTable('2',n,6,true));n+=12;}
-  rightCol.appendChild(makeAdminTable('2',n,6,false));n+=6;
-  rightCol.appendChild(makeAdminTable('2',n,5,true));n+=10;
-  rightCol.appendChild(makeAdminTable('2',n,3,false));n+=3;
-
+  rightCol.style.cssText='display:flex;flex-direction:column;gap:8px;';
+  const top78=document.createElement('div');top78.style.cssText='display:flex;gap:3px;';
+  top78.appendChild(makeSeat('2',n));n++;top78.appendChild(makeSeat('2',n));n++;
+  rightCol.appendChild(top78);
+  const asymWrap=document.createElement('div');asymWrap.style.cssText='display:flex;flex-direction:column;gap:2px;';
+  const aTop=document.createElement('div');aTop.className='seat-row';
+  for(let i=0;i<8;i++){aTop.appendChild(makeSeat('2',n));n++;}
+  const aTbl=document.createElement('div');aTbl.className='table-block';
+  aTbl.style.cssText='width:'+(8*29)+'px;height:20px;';aTbl.textContent='TABLE';
+  const aBot=document.createElement('div');aBot.className='seat-row';
+  for(let i=0;i<4;i++){aBot.appendChild(makeSeat('2',n));n++;}
+  asymWrap.appendChild(aTop);asymWrap.appendChild(aTbl);asymWrap.appendChild(aBot);
+  rightCol.appendChild(asymWrap);
+  rightCol.appendChild(makeTable('2',n,6,true));n+=12;
+  rightCol.appendChild(makeTable('2',n,6,true));n+=12;
+  rightCol.appendChild(makeTable('2',n,8,true));n+=16;
+  rightCol.appendChild(makeTable('2',n,8,true));n+=16;
+  rightCol.appendChild(makeTable('2',n,8,false));n+=8;
+  rightCol.appendChild(makeTable('2',n,8,false));n+=8;
   mainRow.appendChild(leftCol);mainRow.appendChild(rightCol);
   layout.appendChild(mainRow);
-
   const botRow=document.createElement('div');
   botRow.style.cssText='display:flex;gap:16px;align-items:center;margin-top:4px;';
   botRow.appendChild(mkAdminEl('LIFT','#8b0000',70,36));
   const sp=document.createElement('div');sp.style.cssText='flex:1;';botRow.appendChild(sp);
+  const bot2=document.createElement('div');bot2.style.cssText='display:flex;gap:3px;';
+  bot2.appendChild(makeSeat('2',n));n++;bot2.appendChild(makeSeat('2',n));n++;
+  botRow.appendChild(bot2);
   botRow.appendChild(mkAdminEl('DOOR','#555',60,36));
   const sp2=document.createElement('div');sp2.style.cssText='flex:1;';botRow.appendChild(sp2);
   layout.appendChild(botRow);
@@ -335,41 +335,34 @@ function buildFloor3(){
   const layout=document.getElementById('adminGrid3');
   layout.style.cssText='display:flex;flex-direction:column;gap:12px;';
   let n=1;
-
   const topRow=document.createElement('div');
   topRow.style.cssText='display:flex;gap:16px;align-items:center;';
   const tl=document.createElement('div');tl.style.cssText='font-size:0.62rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-right:8px;';tl.textContent='Top';
   topRow.appendChild(tl);
-  for(let t=0;t<2;t++){topRow.appendChild(makeAdminTable('3',n,8,true));n+=16;}
+  for(let t=0;t<2;t++){topRow.appendChild(makeTable('3',n,8,true));n+=16;}
   layout.appendChild(topRow);
-
   const midRow=document.createElement('div');
   midRow.style.cssText='display:flex;gap:16px;align-items:flex-start;';
-
   const leftWall=document.createElement('div');
   leftWall.style.cssText='display:flex;flex-direction:column;gap:8px;align-items:center;';
   const lwl=document.createElement('div');lwl.style.cssText='font-size:0.62rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;';lwl.textContent='Left Wall';
   leftWall.appendChild(lwl);
-  for(let t=0;t<6;t++){leftWall.appendChild(makeAdminTable('3',n,2,true));n+=4;}
-
+  for(let t=0;t<6;t++){leftWall.appendChild(makeTable('3',n,2,true));n+=4;}
   const center=document.createElement('div');
   center.style.cssText='flex:1;min-height:220px;background:#f8f9fa;border:2px solid var(--border);border-radius:6px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;';
   center.innerHTML=`<svg width="100%" height="100%" style="position:absolute;top:0;left:0;opacity:0.15"><line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="2"/><line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="2"/></svg><span style="font-size:0.75rem;font-weight:700;color:var(--text3);z-index:1;">OPEN SPACE</span>`;
-
   const rightWall=document.createElement('div');
   rightWall.style.cssText='display:flex;flex-direction:column;gap:8px;align-items:center;';
   const rwl=document.createElement('div');rwl.style.cssText='font-size:0.62rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;';rwl.textContent='Right Wall';
   rightWall.appendChild(rwl);
-  for(let t=0;t<6;t++){rightWall.appendChild(makeAdminTable('3',n,2,true));n+=4;}
-
+  for(let t=0;t<6;t++){rightWall.appendChild(makeTable('3',n,2,true));n+=4;}
   midRow.appendChild(leftWall);midRow.appendChild(center);midRow.appendChild(rightWall);
   layout.appendChild(midRow);
-
   const botRow=document.createElement('div');
   botRow.style.cssText='display:flex;gap:16px;align-items:center;';
   botRow.appendChild(mkAdminEl('LIFT','#8b0000',70,36));
   const sp=document.createElement('div');sp.style.cssText='flex:1;';botRow.appendChild(sp);
-  botRow.appendChild(makeAdminTable('3',n,5,true));
+  botRow.appendChild(makeTable('3',n,8,true));
   const sp2=document.createElement('div');sp2.style.cssText='flex:1;';botRow.appendChild(sp2);
   layout.appendChild(botRow);
 }
@@ -403,36 +396,39 @@ function mapId(id){
 }
 
 function connectWS(){
-  ws = new WebSocket(WS_URL);
-  ws.onopen = () => {
-    document.getElementById('wsDot').className = 'ws-dot on';
-    document.getElementById('wsLabel').textContent = 'Live';
-    refreshLogs();
-  };
-  ws.onmessage = (e) => {
-    try {
-      const { event, data } = JSON.parse(e.data);
-      if(event === 'all-seats'){
-        seats={};Object.keys(data).forEach(k=>{seats[mapId(k)]=data[k];});
-        Object.keys(seats).forEach(updateSeat); updateStats();
-      }
-      else if(event === 'seat-update'){
-        const sid=mapId(data.seatId);
-        seats[sid]={occupied:data.occupied,studentId:data.studentId,studentName:data.studentName};
-        updateSeat(sid);updateStats();
-      }
-      else if(event === 'student-logs'){ cachedStudents = data||[]; renderStudentLogs(data); }
-      else if(event === 'visitor-logs'){ cachedVisitors = data||[]; renderVisitorLogs(data); }
-    } catch(e){}
-  };
-  ws.onclose = () => {
-    document.getElementById('wsDot').className = 'ws-dot';
-    document.getElementById('wsLabel').textContent = 'Offline';
-    setTimeout(connectWS, 3000);
-  };
-  ws.onerror = () => ws.close();
+  pollSeats();
+  setInterval(pollSeats, 3000);
+  refreshLogs();
 }
-function emit(event, data={}){ if(ws?.readyState === WebSocket.OPEN) ws.send(JSON.stringify({event,data})); }
+
+async function pollSeats(){
+  try {
+    const r = await fetch(API+'?action=get-seats');
+    const res = await r.json();
+    const data = res.data || res;
+    if(typeof data === 'object' && !data.error){
+      seats={};
+      Object.keys(data).forEach(k=>{ seats[mapId(k)]=data[k]; });
+      Object.keys(seats).forEach(updateSeat);
+      updateStats();
+      document.getElementById('wsDot').className='ws-dot on';
+      document.getElementById('wsLabel').textContent='Live';
+    }
+  } catch(e){
+    document.getElementById('wsDot').className='ws-dot';
+    document.getElementById('wsLabel').textContent='Offline';
+  }
+}
+
+async function emit(action, data={}){
+  try {
+    const r = await fetch(API+'?action='+action, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data)});
+    const res = await r.json();
+    if(action==='admin-release-seat') pollSeats();
+    if(action==='get-student-logs'){ cachedStudents=res||[]; renderStudentLogs(res); }
+    if(action==='get-visitor-logs'){ cachedVisitors=res||[]; renderVisitorLogs(res); }
+  } catch(e){}
+}
 
 function updateSeat(id){
   const el = document.getElementById('aseat-'+id);
@@ -443,8 +439,8 @@ function updateSeat(id){
 
 function updateStats(){
   const occ = Object.values(seats).filter(s => s.occupied).length;
-  document.getElementById('adTotal').textContent = 390;
-  document.getElementById('adAvail').textContent = 390 - occ;
+  document.getElementById('adTotal').textContent = 394;
+  document.getElementById('adAvail').textContent = 394 - occ;
   document.getElementById('adOcc').textContent = occ;
   Object.keys(FLOOR_TOTALS).forEach(f => {
     let fOcc = 0, fTotal = FLOOR_TOTALS[f];
@@ -456,7 +452,9 @@ function updateStats(){
 
 function releaseSeat(id){
   if(!seats[id]?.occupied) return;
-  if(confirm('Release seat '+id+'?')) emit('admin-release-seat', {seatId:id});
+  if(confirm('Release seat '+id+'?')){
+    fetch(API+'?action=admin-release-seat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({seatId:id})}).then(()=>pollSeats());
+  }
 }
 
 function showTip(e, id){
@@ -469,7 +467,10 @@ function setFilter(f){
   ['today','week','month','all'].forEach(x => document.getElementById('df-'+x).classList.toggle('active', x===f));
   refreshLogs();
 }
-function refreshLogs(){ emit('get-student-logs', {filter:currentFilter}); emit('get-visitor-logs', {filter:currentFilter}); }
+function refreshLogs(){
+  fetch(API+'?action=get-student-logs&filter='+currentFilter).then(r=>r.json()).then(res=>{cachedStudents=res||[];renderStudentLogs(res);});
+  fetch(API+'?action=get-visitor-logs&filter='+currentFilter).then(r=>r.json()).then(res=>{cachedVisitors=res||[];renderVisitorLogs(res);});
+}
 
 function switchTab(tab){
   document.getElementById('studentLogsDiv').style.display = tab==='student'?'block':'none';
@@ -520,6 +521,62 @@ function exportCSV(){
   cachedVisitors.forEach(l => { csv += (l.name||'')+','+(l.mobile||'')+','+(l.email||'')+','+(l.purpose||'')+','+(l.time||'')+','+(l.date||'')+'\n'; });
   const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(new Blob([csv],{type:'text/csv'})), download: 'library-report-'+new Date().toLocaleDateString('en-IN').replace(/\//g,'-')+'.csv' });
   a.click();
+}
+
+function resetAllSeats(){
+  if(!confirm('Release all seats? This will log out all students.')) return;
+  fetch(API+'?action=reset-all-seats',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'})
+    .then(r=>r.json()).then(res=>{if(res.success){pollSeats();refreshLogs();}});
+}
+
+function printReport(){
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  const occ = Object.values(seats).filter(s=>s.occupied).length;
+  let html = `<html><head><title>Library Report - ${dateStr}</title>
+  <style>
+    body{font-family:Arial,sans-serif;font-size:12px;color:#111;padding:20px;}
+    h2{color:#8b0000;margin-bottom:4px;}
+    .sub{color:#555;font-size:11px;margin-bottom:16px;}
+    .stats{display:flex;gap:20px;margin-bottom:20px;}
+    .stat{background:#f5f5f5;border-left:4px solid #8b0000;padding:8px 14px;border-radius:4px;}
+    .stat strong{font-size:18px;display:block;}
+    table{width:100%;border-collapse:collapse;margin-bottom:20px;}
+    th{background:#8b0000;color:#fff;padding:6px 10px;text-align:left;font-size:11px;}
+    td{padding:6px 10px;border-bottom:1px solid #eee;font-size:11px;}
+    tr:nth-child(even) td{background:#fafafa;}
+    h3{color:#8b0000;margin:16px 0 8px;}
+    @media print{body{padding:0;}}
+  </style></head><body>
+  <h2>Library Seat Management - Activity Report</h2>
+  <div class="sub">${dateStr} &nbsp;|&nbsp; Filter: ${currentFilter}</div>
+  <div class="stats">
+    <div class="stat"><strong>394</strong>Total Seats</div>
+    <div class="stat"><strong>${394-occ}</strong>Available</div>
+    <div class="stat"><strong>${occ}</strong>Occupied</div>
+    <div class="stat"><strong>${cachedStudents.length}</strong>Students</div>
+    <div class="stat"><strong>${cachedVisitors.length}</strong>Visitors</div>
+  </div>
+  <h3>Student Logs</h3>
+  <table><tr><th>Roll No</th><th>Name</th><th>Seat</th><th>Date</th><th>Entry</th><th>Exit</th><th>Duration</th><th>Status</th></tr>`;
+  if(cachedStudents.length){
+    cachedStudents.forEach(l=>{
+      html+=`<tr><td>${l.roll_number||'-'}</td><td>${l.name||'-'}</td><td>${l.seat_id||'-'}</td><td>${l.entry_date||'-'}</td><td>${l.entry_time_fmt||'-'}</td><td>${l.exit_time_fmt||'-'}</td><td>${l.duration||'-'}</td><td>${l.exit_time?'Exited':'Inside'}</td></tr>`;
+    });
+  } else { html+=`<tr><td colspan="8" style="text-align:center;color:#999;">No student logs</td></tr>`; }
+  html+=`</table><h3>Visitor Logs</h3>
+  <table><tr><th>Name</th><th>Mobile</th><th>Email</th><th>Purpose</th><th>Time</th><th>Date</th></tr>`;
+  if(cachedVisitors.length){
+    cachedVisitors.forEach(l=>{
+      html+=`<tr><td>${l.name||'-'}</td><td>${l.mobile||'-'}</td><td>${l.email||'-'}</td><td>${l.purpose||'-'}</td><td>${l.time||'-'}</td><td>${l.date||'-'}</td></tr>`;
+    });
+  } else { html+=`<tr><td colspan="6" style="text-align:center;color:#999;">No visitors</td></tr>`; }
+  html+=`</table></body></html>`;
+  const w = window.open('','_blank');
+  w.document.write(html);
+  w.document.close();
+  w.focus();
+  setTimeout(()=>w.print(), 500);
 }
 
 function updateClock(){

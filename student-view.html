@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -96,10 +96,10 @@ body{font-family:'Roboto',sans-serif;background:var(--bg);color:var(--text);min-
 
 <div class="stats-bar">
   <div class="stat-card">
-    <div><div class="stat-val c-blue" id="totalCount">390</div><div class="stat-label">Total Seats</div></div>
+    <div><div class="stat-val c-blue" id="totalCount">394</div><div class="stat-label">Total Seats</div></div>
   </div>
   <div class="stat-card">
-    <div><div class="stat-val c-green" id="availCount">390</div><div class="stat-label">Available</div></div>
+    <div><div class="stat-val c-green" id="availCount">394</div><div class="stat-label">Available</div></div>
   </div>
   <div class="stat-card">
     <div><div class="stat-val c-red" id="occCount">0</div><div class="stat-label">Occupied</div></div>
@@ -168,9 +168,9 @@ body{font-family:'Roboto',sans-serif;background:var(--bg);color:var(--text);min-
 </div>
 
 <script>
-const WS_URL='ws://127.0.0.1:8080';
-let ws, seats = {};
-const FLOOR_TOTALS = {G:42, 1:114, 2:144, 3:90};
+const API='api.php';
+let seats = {};
+const FLOOR_TOTALS = {G:42, 1:114, 2:142, 3:96};
 function sid(f,n){ return f+'-'+n; }
 
 function makeTable(f, startN, perSide, bothSides=true){
@@ -212,64 +212,62 @@ function buildFloor0(){
   const layout=document.getElementById('layout-G');
   layout.style.cssText='display:flex;flex-direction:column;gap:12px;';
   let n=1;
-
   const mainRow=document.createElement('div');
   mainRow.style.cssText='display:flex;gap:20px;align-items:flex-start;';
-
   mainRow.appendChild(makeSpace('SPACE',180,220));
-
   const rightCol=document.createElement('div');
   rightCol.style.cssText='display:flex;flex-direction:column;gap:10px;';
   rightCol.appendChild(makeTable('G',n,6,false));n+=6;
   for(let t=0;t<3;t++){rightCol.appendChild(makeTable('G',n,6,true));n+=12;}
   mainRow.appendChild(rightCol);
   layout.appendChild(mainRow);
-
   const botRow0=document.createElement('div');
   botRow0.style.cssText='display:flex;gap:16px;align-items:center;margin-top:4px;';
   botRow0.appendChild(makeElement('LIFT','#8b0000',70,36));
-  const doorSpacer=document.createElement('div');doorSpacer.style.cssText='flex:1;';
-  botRow0.appendChild(doorSpacer);
+  const ds=document.createElement('div');ds.style.cssText='flex:1;';botRow0.appendChild(ds);
   botRow0.appendChild(makeElement('DOOR','#555',60,36));
-  const spacer2=document.createElement('div');spacer2.style.cssText='flex:1;';
-  botRow0.appendChild(spacer2);
+  const s2=document.createElement('div');s2.style.cssText='flex:1;';botRow0.appendChild(s2);
   layout.appendChild(botRow0);
 }
 
 function buildFloor1(){
   const layout=document.getElementById('layout-1');
-  layout.style.cssText='display:flex;flex-direction:column;gap:12px;';
+  layout.style.cssText='display:flex;flex-direction:column;gap:10px;';
   let n=1;
-
   const mainRow=document.createElement('div');
-  mainRow.style.cssText='display:flex;gap:24px;align-items:flex-start;';
-
+  mainRow.style.cssText='display:flex;gap:20px;align-items:flex-start;';
   const leftCol=document.createElement('div');
-  leftCol.style.cssText='display:flex;flex-direction:column;gap:10px;';
-  const leftLabel=document.createElement('div');
-  leftLabel.style.cssText='font-size:0.62rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:2px;';
-  leftLabel.textContent='Left Section';
-  leftCol.appendChild(leftLabel);
-  for(let t=0;t<7;t++){leftCol.appendChild(makeTable('1',n,7,true));n+=14;}
-  leftCol.appendChild(makeTable('1',n,7,false));n+=7; // wall table
-
+  leftCol.style.cssText='display:flex;flex-direction:column;gap:8px;';
+  leftCol.appendChild(makeTable('1',n,8,true));n+=16;
+  leftCol.appendChild(makeTable('1',n,8,true));n+=16;
+  leftCol.appendChild(makeTable('1',n,6,true));n+=12;
+  leftCol.appendChild(makeTable('1',n,6,true));n+=12;
+  leftCol.appendChild(makeTable('1',n,6,true));n+=12;
   const rightCol=document.createElement('div');
-  rightCol.style.cssText='display:flex;flex-direction:column;gap:10px;';
-  const rightLabel=document.createElement('div');
-  rightLabel.style.cssText='font-size:0.62rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:2px;';
-  rightLabel.textContent='Right Section';
-  rightCol.appendChild(rightLabel);
-  rightCol.appendChild(makeSpace('SPACE',160,80));
-  rightCol.appendChild(makeTable('1',n,5,false));n+=5;
-  rightCol.appendChild(makeTable('1',n,4,false));n+=4;
-
+  rightCol.style.cssText='display:flex;flex-direction:column;gap:8px;';
+  const top910=document.createElement('div');top910.style.cssText='display:flex;gap:3px;';
+  top910.appendChild(makeSeat('1',n));n++;top910.appendChild(makeSeat('1',n));n++;
+  rightCol.appendChild(top910);
+  const r1116=document.createElement('div');r1116.style.cssText='display:flex;flex-direction:column;gap:2px;';
+  const r1116row=document.createElement('div');r1116row.className='seat-row';
+  for(let i=0;i<6;i++){r1116row.appendChild(makeSeat('1',n));n++;}
+  const r1116tbl=document.createElement('div');r1116tbl.className='table-block';
+  r1116tbl.style.cssText='width:'+(6*29)+'px;height:20px;';r1116tbl.textContent='TABLE';
+  r1116.appendChild(r1116row);r1116.appendChild(r1116tbl);
+  rightCol.appendChild(r1116);
+  rightCol.appendChild(makeSpace('SPACE',200,50));
+  rightCol.appendChild(makeTable('1',n,6,true));n+=12;
+  rightCol.appendChild(makeTable('1',n,6,true));n+=12;
+  rightCol.appendChild(makeTable('1',n,6,true));n+=12;
   mainRow.appendChild(leftCol);mainRow.appendChild(rightCol);
   layout.appendChild(mainRow);
-
   const botRow=document.createElement('div');
   botRow.style.cssText='display:flex;gap:16px;align-items:center;margin-top:4px;';
   botRow.appendChild(makeElement('LIFT','#8b0000',70,36));
   const sp=document.createElement('div');sp.style.cssText='flex:1;';botRow.appendChild(sp);
+  const bot2=document.createElement('div');bot2.style.cssText='display:flex;gap:3px;';
+  bot2.appendChild(makeSeat('1',n));n++;bot2.appendChild(makeSeat('1',n));n++;
+  botRow.appendChild(bot2);
   botRow.appendChild(makeElement('DOOR','#555',60,36));
   const sp2=document.createElement('div');sp2.style.cssText='flex:1;';botRow.appendChild(sp2);
   layout.appendChild(botRow);
@@ -277,42 +275,47 @@ function buildFloor1(){
 
 function buildFloor2(){
   const layout=document.getElementById('layout-2');
-  layout.style.cssText='display:flex;flex-direction:column;gap:12px;';
+  layout.style.cssText='display:flex;flex-direction:column;gap:10px;';
   let n=1;
-
   const mainRow=document.createElement('div');
-  mainRow.style.cssText='display:flex;gap:24px;align-items:flex-start;';
-
+  mainRow.style.cssText='display:flex;gap:20px;align-items:flex-start;';
   const leftCol=document.createElement('div');
-  leftCol.style.cssText='display:flex;flex-direction:column;gap:10px;';
-  const ll=document.createElement('div');ll.style.cssText='font-size:0.62rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:2px;';ll.textContent='Left Section';
-  leftCol.appendChild(ll);
-
-  for(let t=0;t<3;t++){leftCol.appendChild(makeTable('2',n,5,true));n+=10;}
-  leftCol.appendChild(makeTable('2',n,5,false));n+=5;
-
-  leftCol.appendChild(makeSpace('SPACE',160,50));
-
-  for(let t=0;t<2;t++){leftCol.appendChild(makeTable('2',n,5,true));n+=10;}
-  leftCol.appendChild(makeTable('2',n,5,false));n+=5;
-
+  leftCol.style.cssText='display:flex;flex-direction:column;gap:8px;';
+  leftCol.appendChild(makeTable('2',n,6,false));n+=6;
+  leftCol.appendChild(makeTable('2',n,6,true));n+=12;
+  leftCol.appendChild(makeTable('2',n,6,true));n+=12;
+  leftCol.appendChild(makeSpace('SPACE',200,44));
+  leftCol.appendChild(makeTable('2',n,6,true));n+=12;
+  leftCol.appendChild(makeTable('2',n,6,true));n+=12;
   const rightCol=document.createElement('div');
-  rightCol.style.cssText='display:flex;flex-direction:column;gap:10px;';
-  const rl=document.createElement('div');rl.style.cssText='font-size:0.62rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:2px;';rl.textContent='Right Section';
-  rightCol.appendChild(rl);
-  rightCol.appendChild(makeTable('2',n,6,false));n+=6; // top wall
-  for(let t=0;t<4;t++){rightCol.appendChild(makeTable('2',n,6,true));n+=12;}
-  rightCol.appendChild(makeTable('2',n,6,false));n+=6;
-  rightCol.appendChild(makeTable('2',n,5,true));n+=10;
-  rightCol.appendChild(makeTable('2',n,3,false));n+=3;
-
+  rightCol.style.cssText='display:flex;flex-direction:column;gap:8px;';
+  const top78=document.createElement('div');top78.style.cssText='display:flex;gap:3px;';
+  top78.appendChild(makeSeat('2',n));n++;top78.appendChild(makeSeat('2',n));n++;
+  rightCol.appendChild(top78);
+  const asymWrap=document.createElement('div');asymWrap.style.cssText='display:flex;flex-direction:column;gap:2px;';
+  const aTop=document.createElement('div');aTop.className='seat-row';
+  for(let i=0;i<8;i++){aTop.appendChild(makeSeat('2',n));n++;}
+  const aTbl=document.createElement('div');aTbl.className='table-block';
+  aTbl.style.cssText='width:'+(8*29)+'px;height:20px;';aTbl.textContent='TABLE';
+  const aBot=document.createElement('div');aBot.className='seat-row';
+  for(let i=0;i<4;i++){aBot.appendChild(makeSeat('2',n));n++;}
+  asymWrap.appendChild(aTop);asymWrap.appendChild(aTbl);asymWrap.appendChild(aBot);
+  rightCol.appendChild(asymWrap);
+  rightCol.appendChild(makeTable('2',n,6,true));n+=12;
+  rightCol.appendChild(makeTable('2',n,6,true));n+=12;
+  rightCol.appendChild(makeTable('2',n,8,true));n+=16;
+  rightCol.appendChild(makeTable('2',n,8,true));n+=16;
+  rightCol.appendChild(makeTable('2',n,8,false));n+=8;
+  rightCol.appendChild(makeTable('2',n,8,false));n+=8;
   mainRow.appendChild(leftCol);mainRow.appendChild(rightCol);
   layout.appendChild(mainRow);
-
   const botRow=document.createElement('div');
   botRow.style.cssText='display:flex;gap:16px;align-items:center;margin-top:4px;';
   botRow.appendChild(makeElement('LIFT','#8b0000',70,36));
   const sp=document.createElement('div');sp.style.cssText='flex:1;';botRow.appendChild(sp);
+  const bot2=document.createElement('div');bot2.style.cssText='display:flex;gap:3px;';
+  bot2.appendChild(makeSeat('2',n));n++;bot2.appendChild(makeSeat('2',n));n++;
+  botRow.appendChild(bot2);
   botRow.appendChild(makeElement('DOOR','#555',60,36));
   const sp2=document.createElement('div');sp2.style.cssText='flex:1;';botRow.appendChild(sp2);
   layout.appendChild(botRow);
@@ -322,41 +325,34 @@ function buildFloor3(){
   const layout=document.getElementById('layout-3');
   layout.style.cssText='display:flex;flex-direction:column;gap:12px;';
   let n=1;
-
   const topRow=document.createElement('div');
   topRow.style.cssText='display:flex;gap:16px;align-items:center;';
   const tl=document.createElement('div');tl.style.cssText='font-size:0.62rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-right:8px;';tl.textContent='Top';
   topRow.appendChild(tl);
   for(let t=0;t<2;t++){topRow.appendChild(makeTable('3',n,8,true));n+=16;}
   layout.appendChild(topRow);
-
   const midRow=document.createElement('div');
   midRow.style.cssText='display:flex;gap:16px;align-items:flex-start;';
-
   const leftWall=document.createElement('div');
   leftWall.style.cssText='display:flex;flex-direction:column;gap:8px;align-items:center;';
   const lwl=document.createElement('div');lwl.style.cssText='font-size:0.62rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;';lwl.textContent='Left Wall';
   leftWall.appendChild(lwl);
   for(let t=0;t<6;t++){leftWall.appendChild(makeTable('3',n,2,true));n+=4;}
-
   const center=document.createElement('div');
   center.style.cssText='flex:1;min-height:220px;background:#f8f9fa;border:2px solid var(--border);border-radius:6px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;';
   center.innerHTML=`<svg width="100%" height="100%" style="position:absolute;top:0;left:0;opacity:0.15"><line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="2"/><line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="2"/></svg><span style="font-size:0.75rem;font-weight:700;color:var(--text3);z-index:1;">OPEN SPACE</span>`;
-
   const rightWall=document.createElement('div');
   rightWall.style.cssText='display:flex;flex-direction:column;gap:8px;align-items:center;';
   const rwl=document.createElement('div');rwl.style.cssText='font-size:0.62rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;';rwl.textContent='Right Wall';
   rightWall.appendChild(rwl);
   for(let t=0;t<6;t++){rightWall.appendChild(makeTable('3',n,2,true));n+=4;}
-
   midRow.appendChild(leftWall);midRow.appendChild(center);midRow.appendChild(rightWall);
   layout.appendChild(midRow);
-
   const botRow=document.createElement('div');
   botRow.style.cssText='display:flex;gap:16px;align-items:center;';
   botRow.appendChild(makeElement('LIFT','#8b0000',70,36));
   const sp=document.createElement('div');sp.style.cssText='flex:1;';botRow.appendChild(sp);
-  botRow.appendChild(makeTable('3',n,5,true));
+  botRow.appendChild(makeTable('3',n,8,true));
   const sp2=document.createElement('div');sp2.style.cssText='flex:1;';botRow.appendChild(sp2);
   layout.appendChild(botRow);
 }
@@ -377,7 +373,7 @@ function updateSeat(id){
 
 function updateStats(){
   const occ = Object.values(seats).filter(s => s.occupied).length;
-  const total = 390;
+  const total = 394;
   document.getElementById('availCount').textContent = total - occ;
   document.getElementById('occCount').textContent = occ;
   Object.keys(FLOOR_TOTALS).forEach(f => {
@@ -401,32 +397,29 @@ function mapId(id){
 }
 
 function connectWS(){
-  ws = new WebSocket(WS_URL);
-  ws.onopen = () => {
-    document.getElementById('wsDot').className = 'ws-dot on';
-    document.getElementById('wsLabel').textContent = 'Live';
-    document.getElementById('offlineBanner').classList.remove('show');
-  };
-  ws.onmessage = (e) => {
-    try {
-      const { event, data } = JSON.parse(e.data);
-      if(event === 'all-seats'){
-        seats={};Object.keys(data).forEach(k=>{seats[mapId(k)]=data[k];});
-        Object.keys(seats).forEach(updateSeat);updateStats();
-      }
-      else if(event === 'seat-update'){
-        const sid=mapId(data.seatId);
-        seats[sid]={occupied:data.occupied};updateSeat(sid);updateStats();
-      }
-    } catch(err){}
-  };
-  ws.onclose = () => {
-    document.getElementById('wsDot').className = 'ws-dot';
-    document.getElementById('wsLabel').textContent = 'Offline';
+  pollSeats();
+  setInterval(pollSeats, 3000);
+}
+
+async function pollSeats(){
+  try {
+    const r = await fetch(API+'?action=get-seats');
+    const res = await r.json();
+    const data = res.data || res;
+    if(typeof data === 'object' && !data.error){
+      seats={};
+      Object.keys(data).forEach(k=>{ seats[mapId(k)]=data[k]; });
+      Object.keys(seats).forEach(updateSeat);
+      updateStats();
+      document.getElementById('wsDot').className='ws-dot on';
+      document.getElementById('wsLabel').textContent='Live';
+      document.getElementById('offlineBanner').classList.remove('show');
+    }
+  } catch(e){
+    document.getElementById('wsDot').className='ws-dot';
+    document.getElementById('wsLabel').textContent='Offline';
     document.getElementById('offlineBanner').classList.add('show');
-    setTimeout(connectWS, 3000);
-  };
-  ws.onerror = () => ws.close();
+  }
 }
 
 function updateClock(){

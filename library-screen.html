@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -20,25 +20,6 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Roboto',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;}
 
-.kiosk-lock{position:fixed;inset:0;z-index:9999;background:#f0f2f5;display:flex;flex-direction:column;align-items:center;justify-content:center;}
-.kiosk-lock.hide{display:none;}
-.lock-topbar{position:fixed;top:0;left:0;right:0;background:#fff;border-bottom:3px solid var(--primary);padding:8px 28px;display:flex;align-items:center;gap:14px;box-shadow:0 2px 6px rgba(0,0,0,0.08);z-index:10;}
-.lock-topbar img{height:44px;width:auto;object-fit:contain;}
-.lock-topbar-text .en{font-size:0.88rem;font-weight:700;color:var(--primary);}
-.lock-card{background:#fff;border-radius:4px;padding:36px 40px;width:400px;text-align:center;box-shadow:var(--shadow-md);border-top:4px solid var(--primary);margin-top:80px;}
-.lock-card img{height:72px;width:auto;object-fit:contain;margin-bottom:12px;}
-.lock-card h2{font-size:1rem;font-weight:700;color:var(--primary);margin-bottom:2px;}
-.lock-card .lock-sub{font-size:0.75rem;color:var(--text2);margin-bottom:6px;}
-.lock-badge{display:inline-block;background:var(--primary-l);border:1px solid var(--primary-b);color:var(--primary);font-size:0.68rem;font-weight:700;padding:3px 12px;border-radius:3px;margin-bottom:20px;text-transform:uppercase;letter-spacing:1px;}
-.lock-label{font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text2);text-align:left;margin-bottom:4px;}
-.lock-input{width:100%;padding:10px 13px;border:1.5px solid var(--border);border-radius:var(--radius);font-family:'Roboto',sans-serif;font-size:0.95rem;outline:none;transition:border-color .2s;background:#f8f9fa;margin-bottom:5px;}
-.lock-input:focus{border-color:var(--primary);background:#fff;box-shadow:0 0 0 3px var(--primary-l);}
-.lock-input.err{border-color:var(--red);animation:shake .4s;}
-.lock-err{color:var(--red);font-size:0.73rem;height:18px;margin-bottom:8px;text-align:left;}
-.lock-btn{width:100%;padding:10px;background:var(--primary);color:#fff;border:none;border-radius:var(--radius);font-family:'Roboto',sans-serif;font-size:0.9rem;font-weight:500;cursor:pointer;transition:background .2s;}
-.lock-btn:hover{background:var(--primary-d);}
-.lock-footer{font-size:0.62rem;color:var(--text3);margin-top:16px;}
-@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
 
 .header{background:#fff;border-bottom:3px solid var(--primary);padding:8px 24px;display:flex;align-items:center;gap:16px;box-shadow:0 2px 6px rgba(0,0,0,0.08);position:sticky;top:0;z-index:100;}
 .header-brand{display:flex;align-items:center;gap:12px;}
@@ -235,26 +216,7 @@ body{font-family:'Roboto',sans-serif;background:var(--bg);color:var(--text);min-
 .share-opt .so-desc{font-size:0.62rem;color:var(--text2);margin-top:2px;}
 </style>
 
-<div class="kiosk-lock" id="kioskLock">
-  <div class="lock-topbar">
-    <img src="nitj_logo.png" alt="NITJ Logo">
-    <div class="lock-topbar-text">
-      <div style="font-size:0.72rem;font-weight:500;color:var(--primary);">&#2337;&#2366; &#2348;&#2368; &#2310;&#2352; &#2309;&#2350;&#2381;&#2348;&#2375;&#2337;&#2325;&#2352; &#2352;&#2366;&#2359;&#2381;&#2335;&#2381;&#2352;&#2368;&#2351; &#2346;&#2381;&#2352;&#2380;&#2342;&#2381;&#2351;&#2379;&#2327;&#2367;&#2325;&#2368; &#2360;&#2306;&#2360;&#2381;&#2341;&#2366;&#2344;, &#2332;&#2366;&#2354;&#2344;&#2381;&#2343;&#2352;</div>
-      <div class="en">Dr B R Ambedkar National Institute of Technology, Jalandhar</div>
-    </div>
-  </div>
-  <div class="lock-card">
-    <img src="nitj_logo.png" alt="NITJ Logo">
-    <h2>Library Management System</h2>
-    <div class="lock-sub">Dr. B.R. Ambedkar NIT Jalandhar</div>
-    <div class="lock-badge">Kiosk Access</div>
-    <div class="lock-label">Password</div>
-    <input type="password" class="lock-input" id="kioskPw" placeholder="Enter password" onkeydown="if(event.key==='Enter')checkKiosk()">
-    <div class="lock-err" id="kioskErr"></div>
-    <button class="lock-btn" onclick="checkKiosk()">Login</button>
-    <div class="lock-footer">Computer Centre, NIT Jalandhar</div>
-  </div>
-</div>
+
 
 <div class="header">
   <div class="header-brand">
@@ -270,7 +232,7 @@ body{font-family:'Roboto',sans-serif;background:var(--bg);color:var(--text);min-
     <div class="header-date" id="date">--</div>
   </div>
   <div class="header-stats">
-    <div class="stat-pill"><div class="dot dot-green"></div><strong id="avail-count">390</strong><span>Available</span></div>
+    <div class="stat-pill"><div class="dot dot-green"></div><strong id="avail-count">394</strong><span>Available</span></div>
     <div class="stat-pill"><div class="dot dot-red"></div><strong id="occ-count">0</strong><span>Occupied</span></div>
     <div class="stat-pill"><div class="ws-dot" id="wsDot"></div><span id="wsLabel" style="font-size:0.68rem;color:var(--text2);">Connecting</span></div>
     <button class="admin-btn" onclick="openAdmin()">Admin</button>
@@ -336,8 +298,8 @@ body{font-family:'Roboto',sans-serif;background:var(--bg);color:var(--text);min-
     <div class="floor-tabs-bar">
       <button class="floor-tab active" id="ftab-G" onclick="switchFloor('G')">Ground Floor <span class="tab-count" id="fc-G">42 free</span></button>
       <button class="floor-tab" id="ftab-1" onclick="switchFloor('1')">1st Floor <span class="tab-count" id="fc-1">114 free</span></button>
-      <button class="floor-tab" id="ftab-2" onclick="switchFloor('2')">2nd Floor <span class="tab-count" id="fc-2">144 free</span></button>
-      <button class="floor-tab" id="ftab-3" onclick="switchFloor('3')">3rd Floor <span class="tab-count" id="fc-3">90 free</span></button>
+      <button class="floor-tab" id="ftab-2" onclick="switchFloor('2')">2nd Floor <span class="tab-count" id="fc-2">142 free</span></button>
+      <button class="floor-tab" id="ftab-3" onclick="switchFloor('3')">3rd Floor <span class="tab-count" id="fc-3">96 free</span></button>
     </div>
     <div class="floor-panel active" id="floor-G">
       <div class="floor-title">Ground Floor - Reading Hall (42 Seats)</div>
@@ -356,17 +318,17 @@ body{font-family:'Roboto',sans-serif;background:var(--bg);color:var(--text);min-
       <div class="floor-layout-wrap"><div class="floor-layout-inner" id="layout-1"></div></div>
     </div>
     <div class="floor-panel" id="floor-2">
-      <div class="floor-title">2nd Floor - Study Hall (144 Seats)</div>
+      <div class="floor-title">2nd Floor - Study Hall (142 Seats)</div>
       <div class="floor-stats">
-        <div class="fl-stat"><div style="width:8px;height:8px;border-radius:50%;background:var(--green);"></div> Available: <strong id="2f-avail">144</strong></div>
+        <div class="fl-stat"><div style="width:8px;height:8px;border-radius:50%;background:var(--green);"></div> Available: <strong id="2f-avail">142</strong></div>
         <div class="fl-stat"><div style="width:8px;height:8px;border-radius:50%;background:var(--red);"></div> Occupied: <strong id="2f-occ">0</strong></div>
       </div>
       <div class="floor-layout-wrap"><div class="floor-layout-inner" id="layout-2"></div></div>
     </div>
     <div class="floor-panel" id="floor-3">
-      <div class="floor-title">3rd Floor - Quiet Zone (90 Seats)</div>
+      <div class="floor-title">3rd Floor - Quiet Zone (96 Seats)</div>
       <div class="floor-stats">
-        <div class="fl-stat"><div style="width:8px;height:8px;border-radius:50%;background:var(--green);"></div> Available: <strong id="3f-avail">90</strong></div>
+        <div class="fl-stat"><div style="width:8px;height:8px;border-radius:50%;background:var(--green);"></div> Available: <strong id="3f-avail">96</strong></div>
         <div class="fl-stat"><div style="width:8px;height:8px;border-radius:50%;background:var(--red);"></div> Occupied: <strong id="3f-occ">0</strong></div>
       </div>
       <div class="floor-layout-wrap"><div class="floor-layout-inner" id="layout-3"></div></div>
@@ -417,14 +379,15 @@ body{font-family:'Roboto',sans-serif;background:var(--bg);color:var(--text);min-
     </div>
     <div class="admin-actions">
       <button class="a-btn" onclick="openModal('shareModal');refreshLogs()">&#128229; Export</button>
+      <button class="a-btn danger" onclick="resetAllSeats()">&#9888; Release All</button>
       <button class="a-btn danger" onclick="adminLogout()">Logout</button>
     </div>
   </div>
   <div class="admin-body">
     
     <div class="admin-stats">
-      <div class="astat"><div class="astat-label">Total Seats</div><div class="astat-val c-blue" id="adTotal">390</div></div>
-      <div class="astat"><div class="astat-label">Available</div><div class="astat-val c-green" id="adAvail">390</div></div>
+      <div class="astat"><div class="astat-label">Total Seats</div><div class="astat-val c-blue" id="adTotal">394</div></div>
+      <div class="astat"><div class="astat-label">Available</div><div class="astat-val c-green" id="adAvail">394</div></div>
       <div class="astat"><div class="astat-label">Occupied</div><div class="astat-val c-red" id="adOcc">0</div></div>
       <div class="astat"><div class="astat-label">Today Students</div><div class="astat-val c-amber" id="adStudents">0</div></div>
       <div class="astat"><div class="astat-label">Today Visitors</div><div class="astat-val c-pink" id="adVisitors">0</div></div>
@@ -432,8 +395,23 @@ body{font-family:'Roboto',sans-serif;background:var(--bg);color:var(--text);min-
 
     
     <div style="background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:16px;">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-        <div style="font-size:0.85rem;font-weight:700;color:var(--primary);">&#129681; Seat Map</div>
+      <div style="font-size:0.85rem;font-weight:700;color:var(--primary);margin-bottom:12px;">Add Student</div>
+      <div class="add-student-grid">
+        <div><div class="a-input-label">Name *</div><input type="text" class="a-input" id="asName" placeholder="Student name"></div>
+        <div><div class="a-input-label">Roll Number *</div><input type="text" class="a-input" id="asRoll" placeholder="Roll / ID number"></div>
+        <div><div class="a-input-label">Barcode (optional)</div><input type="text" class="a-input" id="asBarcode" placeholder="Leave blank = use roll no"></div>
+        <button class="add-btn" onclick="addStudent()">+ Add</button>
+      </div>
+      <div class="add-msg" id="addMsg"></div>
+      <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+        <span style="font-size:0.7rem;color:var(--text2);">Bulk import (CSV: S.No, Roll, Name, ...):</span>
+        <input type="file" id="csvFile" accept=".csv" style="font-size:0.75rem;">
+        <button class="add-btn" onclick="importCSV()">Import CSV</button>
+        <span id="importMsg" style="font-size:0.75rem;color:var(--green);"></span>
+      </div>
+    </div>
+
+    <div style="background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:16px;">
         <p style="font-size:0.65rem;color:var(--text3);">Click occupied seat to release</p>
       </div>
       
@@ -481,11 +459,11 @@ body{font-family:'Roboto',sans-serif;background:var(--bg);color:var(--text);min-
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
 <script>
-const WS_URL='ws://127.0.0.1:8080';
-let ws,wsReady=false,seats={},currentStudent=null,selectedSeat=null;
+const API='api.php';
+let seats={},currentStudent=null,selectedSeat=null;
 let isAdmin=false,currentFilter='today',cachedStudents=[],cachedVisitors=[],currentStream=null;
 
-const FLOOR_TOTALS={G:42,1:114,2:144,3:90};
+const FLOOR_TOTALS={G:42,1:114,2:142,3:96};
 function sid(f,n){return f+'-'+n;}
 
 function makeTable(f,startN,perSide,bothSides=true){
@@ -601,38 +579,56 @@ function buildFloor0(){
 
 function buildFloor1(){
   const layout=document.getElementById('layout-1');
-  layout.style.cssText='display:flex;flex-direction:column;gap:12px;';
+  layout.style.cssText='display:flex;flex-direction:column;gap:10px;';
   let n=1;
 
   const mainRow=document.createElement('div');
-  mainRow.style.cssText='display:flex;gap:24px;align-items:flex-start;';
+  mainRow.style.cssText='display:flex;gap:20px;align-items:flex-start;';
 
   const leftCol=document.createElement('div');
-  leftCol.style.cssText='display:flex;flex-direction:column;gap:10px;';
-  const leftLabel=document.createElement('div');
-  leftLabel.style.cssText='font-size:0.62rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:2px;';
-  leftLabel.textContent='Left Section';
-  leftCol.appendChild(leftLabel);
-  for(let t=0;t<7;t++){leftCol.appendChild(makeTable('1',n,7,true));n+=14;}
-  leftCol.appendChild(makeTable('1',n,7,false));n+=7; // wall table
+  leftCol.style.cssText='display:flex;flex-direction:column;gap:8px;';
+
+  leftCol.appendChild(makeTable('1',n,8,true));n+=16;
+  leftCol.appendChild(makeTable('1',n,8,true));n+=16;
+  leftCol.appendChild(makeTable('1',n,6,true));n+=12;
+  leftCol.appendChild(makeTable('1',n,6,true));n+=12;
+  leftCol.appendChild(makeTable('1',n,6,true));n+=12;
 
   const rightCol=document.createElement('div');
-  rightCol.style.cssText='display:flex;flex-direction:column;gap:10px;';
-  const rightLabel=document.createElement('div');
-  rightLabel.style.cssText='font-size:0.62rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:2px;';
-  rightLabel.textContent='Right Section';
-  rightCol.appendChild(rightLabel);
-  rightCol.appendChild(makeSpace('SPACE',160,80));
-  rightCol.appendChild(makeTable('1',n,5,false));n+=5;
-  rightCol.appendChild(makeTable('1',n,4,false));n+=4;
+  rightCol.style.cssText='display:flex;flex-direction:column;gap:8px;';
 
-  mainRow.appendChild(leftCol);mainRow.appendChild(rightCol);
+  const top910=document.createElement('div');
+  top910.style.cssText='display:flex;gap:3px;';
+  top910.appendChild(makeSeat('1',n));n++;
+  top910.appendChild(makeSeat('1',n));n++;
+  rightCol.appendChild(top910);
+
+  const r1116=document.createElement('div');
+  r1116.style.cssText='display:flex;flex-direction:column;gap:2px;';
+  const r1116row=document.createElement('div');r1116row.className='seat-row';
+  for(let i=0;i<6;i++){r1116row.appendChild(makeSeat('1',n));n++;}
+  const r1116tbl=document.createElement('div');r1116tbl.className='table-block';
+  r1116tbl.style.cssText='width:'+(6*29)+'px;height:20px;';r1116tbl.textContent='TABLE';
+  r1116.appendChild(r1116row);r1116.appendChild(r1116tbl);
+  rightCol.appendChild(r1116);
+
+  rightCol.appendChild(makeSpace('SPACE',200,50));
+  rightCol.appendChild(makeTable('1',n,6,true));n+=12;
+  rightCol.appendChild(makeTable('1',n,6,true));n+=12;
+  rightCol.appendChild(makeTable('1',n,6,true));n+=12;
+
+  mainRow.appendChild(leftCol);
+  mainRow.appendChild(rightCol);
   layout.appendChild(mainRow);
 
   const botRow=document.createElement('div');
   botRow.style.cssText='display:flex;gap:16px;align-items:center;margin-top:4px;';
   botRow.appendChild(makeElement('LIFT','#8b0000',70,36));
   const sp=document.createElement('div');sp.style.cssText='flex:1;';botRow.appendChild(sp);
+  const bot2=document.createElement('div');bot2.style.cssText='display:flex;gap:3px;';
+  bot2.appendChild(makeSeat('1',n));n++;
+  bot2.appendChild(makeSeat('1',n));n++;
+  botRow.appendChild(bot2);
   botRow.appendChild(makeElement('DOOR','#555',60,36));
   const sp2=document.createElement('div');sp2.style.cssText='flex:1;';botRow.appendChild(sp2);
   layout.appendChild(botRow);
@@ -640,42 +636,60 @@ function buildFloor1(){
 
 function buildFloor2(){
   const layout=document.getElementById('layout-2');
-  layout.style.cssText='display:flex;flex-direction:column;gap:12px;';
+  layout.style.cssText='display:flex;flex-direction:column;gap:10px;';
   let n=1;
 
   const mainRow=document.createElement('div');
-  mainRow.style.cssText='display:flex;gap:24px;align-items:flex-start;';
+  mainRow.style.cssText='display:flex;gap:20px;align-items:flex-start;';
 
   const leftCol=document.createElement('div');
-  leftCol.style.cssText='display:flex;flex-direction:column;gap:10px;';
-  const ll=document.createElement('div');ll.style.cssText='font-size:0.62rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:2px;';ll.textContent='Left Section';
-  leftCol.appendChild(ll);
-
-  for(let t=0;t<3;t++){leftCol.appendChild(makeTable('2',n,5,true));n+=10;}
-  leftCol.appendChild(makeTable('2',n,5,false));n+=5;
-
-  leftCol.appendChild(makeSpace('SPACE',160,50));
-
-  for(let t=0;t<2;t++){leftCol.appendChild(makeTable('2',n,5,true));n+=10;}
-  leftCol.appendChild(makeTable('2',n,5,false));n+=5;
+  leftCol.style.cssText='display:flex;flex-direction:column;gap:8px;';
+  leftCol.appendChild(makeTable('2',n,6,false));n+=6;
+  leftCol.appendChild(makeTable('2',n,6,true));n+=12;
+  leftCol.appendChild(makeTable('2',n,6,true));n+=12;
+  leftCol.appendChild(makeSpace('SPACE',200,44));
+  leftCol.appendChild(makeTable('2',n,6,true));n+=12;
+  leftCol.appendChild(makeTable('2',n,6,true));n+=12;
 
   const rightCol=document.createElement('div');
-  rightCol.style.cssText='display:flex;flex-direction:column;gap:10px;';
-  const rl=document.createElement('div');rl.style.cssText='font-size:0.62rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:2px;';rl.textContent='Right Section';
-  rightCol.appendChild(rl);
-  rightCol.appendChild(makeTable('2',n,6,false));n+=6; // top wall
-  for(let t=0;t<4;t++){rightCol.appendChild(makeTable('2',n,6,true));n+=12;}
-  rightCol.appendChild(makeTable('2',n,6,false));n+=6;
-  rightCol.appendChild(makeTable('2',n,5,true));n+=10;
-  rightCol.appendChild(makeTable('2',n,3,false));n+=3;
+  rightCol.style.cssText='display:flex;flex-direction:column;gap:8px;';
 
-  mainRow.appendChild(leftCol);mainRow.appendChild(rightCol);
+  const top78=document.createElement('div');
+  top78.style.cssText='display:flex;gap:3px;';
+  top78.appendChild(makeSeat('2',n));n++;
+  top78.appendChild(makeSeat('2',n));n++;
+  rightCol.appendChild(top78);
+
+  const asymWrap=document.createElement('div');
+  asymWrap.style.cssText='display:flex;flex-direction:column;gap:2px;';
+  const aTop=document.createElement('div');aTop.className='seat-row';
+  for(let i=0;i<8;i++){aTop.appendChild(makeSeat('2',n));n++;}
+  const aTbl=document.createElement('div');aTbl.className='table-block';
+  aTbl.style.cssText='width:'+(8*29)+'px;height:20px;';aTbl.textContent='TABLE';
+  const aBot=document.createElement('div');aBot.className='seat-row';
+  for(let i=0;i<4;i++){aBot.appendChild(makeSeat('2',n));n++;}
+  asymWrap.appendChild(aTop);asymWrap.appendChild(aTbl);asymWrap.appendChild(aBot);
+  rightCol.appendChild(asymWrap);
+
+  rightCol.appendChild(makeTable('2',n,6,true));n+=12;
+  rightCol.appendChild(makeTable('2',n,6,true));n+=12;
+  rightCol.appendChild(makeTable('2',n,8,true));n+=16;
+  rightCol.appendChild(makeTable('2',n,8,true));n+=16;
+  rightCol.appendChild(makeTable('2',n,8,false));n+=8;
+  rightCol.appendChild(makeTable('2',n,8,false));n+=8;
+
+  mainRow.appendChild(leftCol);
+  mainRow.appendChild(rightCol);
   layout.appendChild(mainRow);
 
   const botRow=document.createElement('div');
   botRow.style.cssText='display:flex;gap:16px;align-items:center;margin-top:4px;';
   botRow.appendChild(makeElement('LIFT','#8b0000',70,36));
   const sp=document.createElement('div');sp.style.cssText='flex:1;';botRow.appendChild(sp);
+  const bot2=document.createElement('div');bot2.style.cssText='display:flex;gap:3px;';
+  bot2.appendChild(makeSeat('2',n));n++;
+  bot2.appendChild(makeSeat('2',n));n++;
+  botRow.appendChild(bot2);
   botRow.appendChild(makeElement('DOOR','#555',60,36));
   const sp2=document.createElement('div');sp2.style.cssText='flex:1;';botRow.appendChild(sp2);
   layout.appendChild(botRow);
@@ -719,26 +733,63 @@ function buildFloor3(){
   botRow.style.cssText='display:flex;gap:16px;align-items:center;';
   botRow.appendChild(makeElement('LIFT','#8b0000',70,36));
   const sp=document.createElement('div');sp.style.cssText='flex:1;';botRow.appendChild(sp);
-  botRow.appendChild(makeTable('3',n,5,true));
+  botRow.appendChild(makeTable('3',n,8,true));
   const sp2=document.createElement('div');sp2.style.cssText='flex:1;';botRow.appendChild(sp2);
   layout.appendChild(botRow);
 }
 
-function connectWS(){
-  setWsStatus('connecting');ws=new WebSocket(WS_URL);
-  ws.onopen=()=>{wsReady=true;setWsStatus('connected');};
-  ws.onmessage=(e)=>{try{const{event,data}=JSON.parse(e.data);handleEvent(event,data);}catch(err){}};
-  ws.onclose=()=>{wsReady=false;setWsStatus('disconnected');setTimeout(connectWS,3000);};
-  ws.onerror=()=>ws.close();
+async function api(action, data={}, method='GET'){
+  if(method==='POST'){
+    const r=await fetch(API+'?action='+action,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
+    return r.json();
+  }
+  const params=new URLSearchParams({action,...data});
+  const r=await fetch(API+'?'+params);
+  return r.json();
 }
-function emit(event,data={}){
-  if(ws&&ws.readyState===WebSocket.OPEN)ws.send(JSON.stringify({event,data}));
-  else setTimeout(()=>emit(event,data),500);
+
+async function emit(action, data={}){
+  try{
+    const res=await api(action,data,'POST');
+    if(action==='verify-student'&&res.student) handleEvent('student-verified',res);
+    if(action==='book-seat'||action==='student-exit'||action==='admin-release-seat') pollSeats();
+    if(action==='get-student-logs') { cachedStudents=res||[]; renderStudentLogs(res); }
+    if(action==='get-visitor-logs') { cachedVisitors=res||[]; renderVisitorLogs(res); }
+    if(action==='add-student'){
+      const msg=document.getElementById('addMsg');
+      msg.textContent=res.msg;msg.className='add-msg '+(res.success?'ok':'err');
+      if(res.success){document.getElementById('asName').value='';document.getElementById('asRoll').value='';document.getElementById('asBarcode').value='';}
+      setTimeout(()=>msg.className='add-msg',4000);
+    }
+  }catch(e){console.error(e);}
 }
+
+async function pollSeats(){
+  try{
+    const res=await api('get-seats',{},'GET');
+    const newSeats=res.data||res;
+    if(typeof newSeats==='object'&&!newSeats.error){
+      Object.keys(newSeats).forEach(k=>{
+        const mapped=mapId(k);
+        seats[mapped]=newSeats[k];
+        updateSeatUI(mapped);
+      });
+      updateCounts();
+      if(isAdmin){buildAdminGrid();updateAdminStats();}
+      setWsStatus('connected');
+    }
+  }catch(e){setWsStatus('disconnected');}
+}
+
 function setWsStatus(s){
   const dot=document.getElementById('wsDot'),label=document.getElementById('wsLabel');
   dot.className='ws-dot'+(s==='connected'?' on':'');
   label.textContent=s==='connected'?'Live':s==='disconnected'?'Offline':'Connecting';
+}
+
+function connectWS(){
+  pollSeats();
+  setInterval(pollSeats,3000);
 }
 
 function mapId(id){
@@ -777,13 +828,6 @@ function handleEvent(event,data){
     case 'error-msg': alert(data.msg);break;
   }
 }
-const KIOSK_PW='kiosk123';
-function checkKiosk(){
-  const pw=document.getElementById('kioskPw').value;
-  if(pw===KIOSK_PW){document.getElementById('kioskLock').classList.add('hide');document.getElementById('barcode-input').focus();}
-  else{const inp=document.getElementById('kioskPw');inp.classList.add('err');document.getElementById('kioskErr').textContent='Wrong password!';inp.value='';setTimeout(()=>{inp.classList.remove('err');document.getElementById('kioskErr').textContent='';},500);}
-}
-document.getElementById('kioskPw').addEventListener('keydown',e=>{if(e.key==='Enter')checkKiosk();});
 const ADMIN_PW='admin123';
 function openAdmin(){openModal('adminModal');setTimeout(()=>document.getElementById('adminPw').focus(),100);}
 function closeAdmin(){closeModal('adminModal');}
@@ -794,10 +838,32 @@ function checkAdmin(){
 }
 document.getElementById('adminPw').addEventListener('keydown',e=>{if(e.key==='Enter')checkAdmin();});
 function adminLogout(){isAdmin=false;document.getElementById('adminDash').classList.remove('show');}
+function resetAllSeats(){
+  if(!confirm('Release all seats? This will log out all students.')) return;
+  api('reset-all-seats',{},'POST').then(res=>{if(res.success){pollSeats();refreshLogs();}});
+}
 function addStudent(){
   const name=document.getElementById('asName')?.value?.trim(),roll=document.getElementById('asRoll')?.value?.trim(),barcode=document.getElementById('asBarcode')?.value?.trim();
   if(!name||!roll){alert('Name and Roll Number are required!');return;}
-  emit('add-student',{name,roll_number:roll,barcode:barcode||roll});
+  api('add-student',{name,roll_number:roll,barcode:barcode||roll},'POST').then(res=>{
+    const msg=document.getElementById('addMsg');
+    msg.textContent=res.msg;msg.className='add-msg '+(res.success?'ok':'err');
+    if(res.success){document.getElementById('asName').value='';document.getElementById('asRoll').value='';document.getElementById('asBarcode').value='';}
+    setTimeout(()=>msg.className='add-msg',4000);
+  });
+}
+
+function importCSV(){
+  const file=document.getElementById('csvFile').files[0];
+  if(!file){alert('Select a CSV file first');return;}
+  const fd=new FormData();fd.append('csv',file);fd.append('action','import-csv');
+  fetch('api.php?action=import-csv',{method:'POST',body:fd})
+    .then(r=>r.json())
+    .then(res=>{
+      const msg=document.getElementById('importMsg');
+      msg.textContent=res.msg;
+      msg.style.color=res.success?'var(--green)':'var(--red)';
+    });
 }
 function buildAdminGrid(){
   buildAdminFloor0();buildAdminFloor1();buildAdminFloor2();buildAdminFloor3();
@@ -907,12 +973,17 @@ function switchAdminFloor(f){
   document.getElementById('afloor-'+f).classList.add('active');
 }
 function updateAdminSeat(id){const el=document.getElementById('aseat-'+id);if(!el)return;if(seats[id]?.occupied){el.classList.add('occ');el.title=id+(seats[id]?.studentName?' - '+seats[id].studentName:'');}else{el.classList.remove('occ');el.title=id;}}
-function adminRelease(id){if(!seats[id]?.occupied)return;if(confirm('Release seat '+id+'?'))emit('admin-release-seat',{seatId:id});}
+function adminRelease(id){if(!seats[id]?.occupied)return;if(confirm('Release seat '+id+'?')){
+  api('admin-release-seat',{seatId:id},'POST').then(()=>pollSeats());
+}}
 function showTooltip(e,id){const t=document.getElementById('tooltip'),s=seats[id];if(s?.occupied){t.textContent=id+(s.studentName?' - '+s.studentName:'');t.style.display='block';t.style.left=(e.clientX+12)+'px';t.style.top=(e.clientY-28)+'px';}}
 function hideTooltip(){document.getElementById('tooltip').style.display='none';}
-function updateAdminStats(){const occ=Object.values(seats).filter(s=>s.occupied).length;document.getElementById('adTotal').textContent=390;document.getElementById('adAvail').textContent=390-occ;document.getElementById('adOcc').textContent=occ;}
+function updateAdminStats(){const occ=Object.values(seats).filter(s=>s.occupied).length;document.getElementById('adTotal').textContent=394;document.getElementById('adAvail').textContent=394-occ;document.getElementById('adOcc').textContent=occ;}
 function setFilter(f){currentFilter=f;['today','week','month','all'].forEach(x=>document.getElementById('df-'+x).classList.toggle('active',x===f));refreshLogs();}
-function refreshLogs(){emit('get-student-logs',{filter:currentFilter});emit('get-visitor-logs',{filter:currentFilter});}
+function refreshLogs(){
+  api('get-student-logs',{filter:currentFilter},'GET').then(res=>{cachedStudents=res||[];renderStudentLogs(res);});
+  api('get-visitor-logs',{filter:currentFilter},'GET').then(res=>{cachedVisitors=res||[];renderVisitorLogs(res);});
+}
 function renderStudentLogs(logs){
   const tb=document.getElementById('studentTbody');document.getElementById('adStudents').textContent=logs?.length||0;
   if(!logs?.length){tb.innerHTML='<tr><td class="empty-td" colspan="9">No student logs</td></tr>';return;}
@@ -938,7 +1009,7 @@ function normalizeSeats(rawSeats){
 }
 function updateCounts(){
   const occ=Object.values(seats).filter(s=>s.occupied).length;
-  document.getElementById('avail-count').textContent=390-occ;
+  document.getElementById('avail-count').textContent=394-occ;
   document.getElementById('occ-count').textContent=occ;
   Object.keys(FLOOR_TOTALS).forEach(f=>{
     let fOcc=0,fTotal=FLOOR_TOTALS[f];
@@ -948,22 +1019,34 @@ function updateCounts(){
   });
 }
 const barcodeInput=document.getElementById('barcode-input');
-barcodeInput.addEventListener('keydown',e=>{if(e.key==='Enter'){const code=barcodeInput.value.trim();if(code){emit('verify-student',{barcode:code});barcodeInput.value='';}}}); 
-setInterval(()=>{const active=document.activeElement,tag=active?.tagName?.toLowerCase(),type=active?.type?.toLowerCase();if(tag==='input'&&(type==='password'||active?.closest('.modal-overlay')||active?.closest('.kiosk-lock')))return;if(active!==document.getElementById('confirmBtn'))barcodeInput.focus();},2000);
+barcodeInput.addEventListener('keydown',e=>{if(e.key==='Enter'){const code=barcodeInput.value.trim();if(code){
+  api('verify-student',{barcode:code},'POST').then(res=>{if(res.student)handleEvent('student-verified',res);else alert(res.error||'Student not found');});
+  barcodeInput.value='';
+}}});  
+setInterval(()=>{const active=document.activeElement,tag=active?.tagName?.toLowerCase(),type=active?.type?.toLowerCase();if(tag==='input'&&(type==='password'||active?.closest('.modal-overlay')))return;if(active!==document.getElementById('confirmBtn'))barcodeInput.focus();},2000);
 function showStudentCard(student,isInside){
   const card=document.getElementById('studentCard');document.getElementById('scName').textContent=student.name;document.getElementById('scRoll').textContent='Roll: '+student.roll_number;card.classList.add('show');
-  if(isInside){card.classList.add('exit');document.getElementById('scStatus').textContent='Exiting - seat will be released...';document.getElementById('confirmBtn').classList.remove('show');emit('student-exit',{studentId:student.id});showToastMsg('exit',student.name,student.seat_id);setTimeout(resetUI,3500);}
+  if(isInside){card.classList.add('exit');document.getElementById('scStatus').textContent='Exiting - seat will be released...';document.getElementById('confirmBtn').classList.remove('show');
+    api('student-exit',{studentId:student.id},'POST').then(res=>{if(res.success){showToastMsg('exit',student.name,student.seat_id);pollSeats();}});
+    setTimeout(resetUI,3500);}
   else{card.classList.remove('exit');document.getElementById('scStatus').textContent='Select a seat on the map below';document.getElementById('confirmBtn').classList.remove('show');selectedSeat=null;clearSelected();}
 }
 function selectSeat(id){if(!currentStudent){alert('Please scan your ID card first!');return;}if(seats[id]?.occupied)return;clearSelected();selectedSeat=id;document.getElementById('seat-'+id).classList.add('selected');document.getElementById('confirmBtn').textContent='Confirm Seat '+id;document.getElementById('confirmBtn').classList.add('show');document.getElementById('scStatus').textContent='Selected: '+id;}
 function clearSelected(){document.querySelectorAll('.seat.selected').forEach(el=>el.classList.remove('selected'));}
-function confirmSeat(){if(!currentStudent||!selectedSeat)return;emit('book-seat',{studentId:currentStudent.id,seatId:selectedSeat});showToastMsg('enter',currentStudent.name,selectedSeat);setTimeout(resetUI,3500);}
+function confirmSeat(){if(!currentStudent||!selectedSeat)return;
+  api('book-seat',{studentId:currentStudent.id,seatId:selectedSeat},'POST').then(res=>{
+    if(res.success){showToastMsg('enter',currentStudent.name,selectedSeat);pollSeats();}
+    else alert(res.error||'Seat already taken');
+  });
+  setTimeout(resetUI,3500);
+}
 function resetUI(){currentStudent=null;selectedSeat=null;document.getElementById('studentCard').classList.remove('show','exit');document.getElementById('confirmBtn').classList.remove('show');clearSelected();hideToastMsg();}
 function switchMode(mode){const isStudent=mode==='student';document.getElementById('studentSection').style.display=isStudent?'block':'none';document.getElementById('visitorSection').className='visitor-section'+(isStudent?'':' show');document.getElementById('btnStudent').classList.toggle('active',isStudent);document.getElementById('btnVisitor').classList.toggle('active',!isStudent);setTimeout(()=>(isStudent?barcodeInput:document.getElementById('vName')).focus(),100);}
 function submitVisitor(){
   const name=document.getElementById('vName').value.trim(),mobile=document.getElementById('vMobile').value.trim(),email=document.getElementById('vEmail').value.trim(),purpose=document.getElementById('vPurpose').value;
   if(!name){alertField('vName','Name is required!');return;}if(!mobile||mobile.length!==10){alertField('vMobile','10 digit mobile!');return;}
-  const now=new Date();emit('visitor-entry',{name,mobile,email:email||null,purpose:purpose||null,visit_date:now.toLocaleDateString('en-IN'),visit_time:now.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})});
+  const now=new Date();
+  api('visitor-entry',{name,mobile,email:email||null,purpose:purpose||null,visit_date:now.toLocaleDateString('en-IN'),visit_time:now.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})},'POST');
   document.getElementById('visitorForm').style.display='none';document.getElementById('visitorSuccess').classList.add('show');document.getElementById('vsName').textContent=name;document.getElementById('vsInfo').innerHTML='Mobile: '+mobile+(email?'<br>Email: '+email:'')+(purpose?'<br>Purpose: '+purpose:'')+'<br>Time: '+now.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});showToastMsg('visitor',name,null);
 }
 function alertField(id,msg){const el=document.getElementById(id);el.style.borderColor='var(--red)';el.placeholder=msg;el.focus();setTimeout(()=>{el.style.borderColor='';el.placeholder='';},2500);}
@@ -971,13 +1054,13 @@ function resetVisitor(){['vName','vMobile','vEmail'].forEach(id=>document.getEle
 function showToastMsg(type,name,seatId){
   const toast=document.getElementById('toast');
   const cfg={enter:{ico:'&#10003;',title:'Seat Confirmed!',msg:'Welcome, '+name+'! Enjoy your study session.',seat:seatId?'Your Seat: '+seatId:'',cls:''},exit:{ico:'&#128075;',title:'Goodbye!',msg:'See you next time, '+name+'.',seat:seatId?'Seat '+seatId+' released':'',cls:'exit-t'},visitor:{ico:'&#10003;',title:'Visit Registered!',msg:'Welcome, '+name+'! Entry recorded.',seat:'',cls:'visitor-t'}}[type];
-  document.getElementById('toastIco').innerHTML=cfg.ico;document.getElementById('toastTitle').textContent=cfg.title;document.getElementById('toastMsg').textContent=cfg.msg;document.getElementById('toastSeat').textContent=cfg.seat;toast.className='toast show '+cfg.cls;document.getElementById('overlay').classList.add('show');if(type==='visitor')setTimeout(hideToastMsg,3000);
+  document.getElementById('toastIco').innerHTML=cfg.ico;document.getElementById('toastTitle').textContent=cfg.title;document.getElementById('toastMsg').textContent=cfg.msg;document.getElementById('toastSeat').textContent=cfg.seat;toast.className='toast show '+cfg.cls;document.getElementById('overlay').classList.add('show');setTimeout(hideToastMsg,1000);
 }
 function hideToastMsg(){document.getElementById('toast').className='toast';document.getElementById('overlay').classList.remove('show');}
 function openModal(id){document.getElementById(id).classList.add('show');}
 function closeModal(id){document.getElementById(id).classList.remove('show');}
 async function loadCameras(){try{await navigator.mediaDevices.getUserMedia({video:true});const devices=(await navigator.mediaDevices.enumerateDevices()).filter(d=>d.kind==='videoinput');const sel=document.getElementById('camera-select');sel.innerHTML='<option value="">Select Camera...</option>';devices.forEach((d,i)=>{const o=document.createElement('option');o.value=d.deviceId;o.textContent=d.label||'Camera '+(i+1);if(d.label.toLowerCase().includes('droid')||d.label.toLowerCase().includes('virtual'))o.selected=true;sel.appendChild(o);});if(sel.value)switchCamera(sel.value);else if(devices.length){sel.value=devices[devices.length-1].deviceId;switchCamera(sel.value);}}catch(e){}}
-async function switchCamera(deviceId){if(!deviceId)return;if(currentStream){currentStream.getTracks().forEach(t=>t.stop());currentStream=null;}try{Quagga.stop();}catch(e){}try{currentStream=await navigator.mediaDevices.getUserMedia({video:{deviceId:{exact:deviceId},width:260,height:140}});document.getElementById('camera-view').srcObject=currentStream;Quagga.init({inputStream:{type:'LiveStream',target:document.getElementById('camera-view'),constraints:{deviceId:{exact:deviceId}}},decoder:{readers:['code_128_reader','ean_reader','ean_8_reader','code_39_reader']},locate:true},err=>{if(!err)Quagga.start();});let lastCode='',lastTime=0;Quagga.onDetected(r=>{const code=r.codeResult.code,now=Date.now();if(code!==lastCode||now-lastTime>3000){lastCode=code;lastTime=now;emit('verify-student',{barcode:code});}});}catch(e){}}
+async function switchCamera(deviceId){if(!deviceId)return;if(currentStream){currentStream.getTracks().forEach(t=>t.stop());currentStream=null;}try{Quagga.stop();}catch(e){}try{currentStream=await navigator.mediaDevices.getUserMedia({video:{deviceId:{exact:deviceId},width:260,height:140}});document.getElementById('camera-view').srcObject=currentStream;Quagga.init({inputStream:{type:'LiveStream',target:document.getElementById('camera-view'),constraints:{deviceId:{exact:deviceId}}},decoder:{readers:['code_128_reader','ean_reader','ean_8_reader','code_39_reader']},locate:true},err=>{if(!err)Quagga.start();});let lastCode='',lastTime=0;Quagga.onDetected(r=>{const code=r.codeResult.code,now=Date.now();if(code!==lastCode||now-lastTime>3000){lastCode=code;lastTime=now;api('verify-student',{barcode:code},'POST').then(res=>{if(res.student)handleEvent('student-verified',res);});}});}catch(e){}}
 function exportCSV(type){let csv='',filename='',now=new Date().toLocaleDateString('en-IN').replace(/\//g,'-');if(type==='students'||type==='both'){csv+='STUDENT LOGS\nRoll No,Name,Seat,Entry,Exit,Status\n';cachedStudents.forEach(l=>{csv+=(l.roll_number||'')+','+(l.name||'')+','+(l.seat_id||'')+','+(l.entry_time_fmt||'')+','+(l.exit_time_fmt||'')+(l.exit_time?',Exited':',Inside')+'\n';});filename='students-'+now+'.csv';}if(type==='visitors'||type==='both'){if(type==='both')csv+='\n';csv+='VISITOR LOGS\nName,Mobile,Email,Purpose,Time,Date\n';cachedVisitors.forEach(l=>{csv+=(l.name||'')+','+(l.mobile||'')+','+(l.email||'')+','+(l.purpose||'')+','+(l.time||'')+','+(l.date||'')+'\n';});filename=type==='visitors'?'visitors-'+now+'.csv':'full-report-'+now+'.csv';}if(!csv.trim()){alert('No data!');return;}const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(new Blob([csv],{type:'text/csv'})),download:filename});a.click();closeModal('shareModal');}
 function printReport(){const occ=Object.values(seats).filter(s=>s.occupied).length;const win=window.open('','_blank');win.document.write('<html><head><title>Library Report - NITJ</title><style>body{font-family:sans-serif;padding:30px}h1{color:#8b0000}table{width:100%;border-collapse:collapse;margin-top:12px}th{background:#8b0000;color:#fff;padding:8px;text-align:left;font-size:11px}td{padding:8px;border-bottom:1px solid #eee;font-size:11px}</style></head><body><h1>Library Report - Dr. B.R. Ambedkar NIT Jalandhar</h1><p>'+new Date().toLocaleString('en-IN')+'</p><h2>Student Logs</h2><table><thead><tr><th>Roll</th><th>Name</th><th>Seat</th><th>Entry</th><th>Exit</th><th>Status</th></tr></thead><tbody>'+cachedStudents.map(l=>'<tr><td>'+(l.roll_number||'-')+'</td><td>'+(l.name||'-')+'</td><td>'+(l.seat_id||'-')+'</td><td>'+(l.entry_time_fmt||'-')+'</td><td>'+(l.exit_time_fmt||'-')+'</td><td>'+(l.exit_time?'Exited':'Inside')+'</td></tr>').join('')+'</tbody></table></body></html>');win.document.close();win.print();closeModal('shareModal');}
 function updateClock(){const now=new Date();document.getElementById('clock').textContent=now.toLocaleTimeString('en-US',{hour12:false,hour:'2-digit',minute:'2-digit',second:'2-digit'});document.getElementById('date').textContent=now.toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'});}
