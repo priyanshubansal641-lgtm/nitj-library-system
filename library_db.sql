@@ -137,6 +137,59 @@ INSERT INTO `visitors` VALUES (1,'gewgesg','8306724643','priyanshubansal641@gmai
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
+--
+-- Table structure for table `app_options`
+--
+
+DROP TABLE IF EXISTS `app_options`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `app_options` (
+  `option_key` varchar(50) NOT NULL,
+  `option_value` varchar(100) NOT NULL,
+  PRIMARY KEY (`option_key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `app_options`
+--
+
+LOCK TABLES `app_options` WRITE;
+/*!40000 ALTER TABLE `app_options` DISABLE KEYS */;
+INSERT INTO `app_options` VALUES ('last_reset_date','2000-01-01');
+/*!40000 ALTER TABLE `app_options` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `visitors`
+--
+
+DROP TABLE IF EXISTS `visitors`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `visitors` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `mobile` varchar(15) NOT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `purpose` varchar(50) DEFAULT NULL,
+  `entry_time` datetime DEFAULT NULL,
+  `visit_date` varchar(20) DEFAULT NULL,
+  `visit_time` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `visitors`
+--
+
+LOCK TABLES `visitors` WRITE;
+/*!40000 ALTER TABLE `visitors` DISABLE KEYS */;
+/*!40000 ALTER TABLE `visitors` ENABLE KEYS */;
+UNLOCK TABLES;
+
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
@@ -145,4 +198,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-04-16 12:50:47
+-- Dump completed on 2026-04-22 00:00:00
